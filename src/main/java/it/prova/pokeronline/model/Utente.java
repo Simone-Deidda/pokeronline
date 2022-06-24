@@ -18,7 +18,6 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-
 @Entity
 @Table(name = "utente")
 public class Utente {
@@ -42,15 +41,15 @@ public class Utente {
 	private Integer esperienzaAccumulata;
 	@Column(name = "creditoaccumulato")
 	private Integer creditoAccumulato;
-	
+
 	@ManyToMany
 	@JoinTable(name = "utente_ruolo", joinColumns = @JoinColumn(name = "utente_id", referencedColumnName = "ID"), inverseJoinColumns = @JoinColumn(name = "ruolo_id", referencedColumnName = "ID"))
 	private Set<Ruolo> ruoli = new HashSet<>(0);
-	
+
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "tavolo_id", nullable = true)
 	private Tavolo tavolo;
-	
+
 	public Utente() {
 	}
 
@@ -142,5 +141,11 @@ public class Utente {
 		this.tavolo = tavolo;
 	}
 
-	
+	public boolean isAttivo() {
+		return this.stato != null && this.stato.equals(StatoUtente.ATTIVO);
+	}
+
+	public boolean isDisabilitato() {
+		return this.stato != null && this.stato.equals(StatoUtente.DISABILITATO);
+	}
 }
