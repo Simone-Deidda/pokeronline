@@ -53,6 +53,15 @@ public class Utente {
 	public Utente() {
 	}
 
+	public Utente(String username, String password, String nome, String cognome, LocalDate dataRegistrazione) {
+		this.username = username;
+		this.password = password;
+		this.nome = nome;
+		this.cognome = cognome;
+		this.dataRegistrazione = dataRegistrazione;
+
+	}
+
 	public Long getId() {
 		return id;
 	}
