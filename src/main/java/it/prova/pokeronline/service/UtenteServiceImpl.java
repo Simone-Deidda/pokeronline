@@ -1,12 +1,14 @@
 package it.prova.pokeronline.service;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import it.prova.pokeronline.dto.UtenteDTO;
 import it.prova.pokeronline.model.StatoUtente;
 import it.prova.pokeronline.model.Utente;
 import it.prova.pokeronline.repository.UtenteRepository;
@@ -19,7 +21,7 @@ public class UtenteServiceImpl implements UtenteService {
 	private PasswordEncoder passwordEncoder;
 
 	@Override
-	@Transactional
+	@Transactional(readOnly = true)
 	public Utente findByUsername(String username) {
 		return repository.findByUsername(username).orElse(null);
 	}
@@ -54,6 +56,12 @@ public class UtenteServiceImpl implements UtenteService {
 			utenteInstance.setStato(StatoUtente.DISABILITATO);
 		else if (utenteInstance.getStato().equals(StatoUtente.DISABILITATO))
 			utenteInstance.setStato(StatoUtente.ATTIVO);
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public List<Utente> caricaListaUtenti() {
+		return (List<Utente>) repository.findAll();
 	}
 
 }

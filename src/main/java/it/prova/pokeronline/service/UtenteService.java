@@ -1,5 +1,7 @@
 package it.prova.pokeronline.service;
 
+import java.util.List;
+
 import it.prova.pokeronline.model.Utente;
 
 public interface UtenteService {
@@ -10,4 +12,6 @@ public interface UtenteService {
 	public void changeUserAbilitation(Long utenteInstanceId);
 
 	Utente caricaSingoloUtente(Long id);
+
+	public List<Utente> caricaListaUtenti();
 }

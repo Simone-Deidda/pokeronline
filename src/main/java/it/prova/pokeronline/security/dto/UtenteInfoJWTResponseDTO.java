@@ -16,7 +16,6 @@ public class UtenteInfoJWTResponseDTO {
 
 	public UtenteInfoJWTResponseDTO(String nome, String cognome, String username, LocalDate dataRegistrazione,
 			Integer esperienzaAccumulata, Integer creditoAccumulato, List<String> roles) {
-		super();
 		this.nome = nome;
 		this.cognome = cognome;
 		this.username = username;
