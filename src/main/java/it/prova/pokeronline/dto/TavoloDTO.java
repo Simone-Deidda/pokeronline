@@ -131,4 +131,8 @@ public class TavoloDTO {
 				.collect(Collectors.toList());
 	}
 
+	public static List<TavoloDTO> buildTavoloDTOFromModelList(List<Tavolo> tavoliDisponibili) {
+		return tavoliDisponibili.stream().map(entity -> TavoloDTO.buildTavoloDTOFromModel(entity)).collect(Collectors.toList());
+	}
+
 }

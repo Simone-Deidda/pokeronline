@@ -18,7 +18,10 @@ public interface TavoloRepository extends CrudRepository<Tavolo, Long>, CustomTa
 	@EntityGraph(attributePaths = { "giocatori", "proprietarioTavolo" })
 	List<Tavolo> findAllByProprietarioTavolo_Id(Long id);
 
-	@EntityGraph(attributePaths = { "giocatori" })
+	@EntityGraph(attributePaths = { "giocatori", "proprietarioTavolo" })
 	Optional<Tavolo> findFirstByGiocatori_Id(Long id);
+
+	@EntityGraph(attributePaths = { "giocatori", "proprietarioTavolo" })
+	List<Tavolo> findByEsperienzaMinimaLessThanEqual(Integer esperienzaAccumulata);
 
 }

@@ -81,8 +81,15 @@ public class TavoloServiceImpl implements TavoloService {
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public Tavolo cercaUltimaPartita(Utente utenteLoggato) {
 		return tavoloRepository.findFirstByGiocatori_Id(utenteLoggato.getId()).orElse(null);
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public List<Tavolo> cercaPartita(Utente utenteLoggato) {
+		return tavoloRepository.findByEsperienzaMinimaLessThanEqual(utenteLoggato.getEsperienzaAccumulata());
 	}
 
 	

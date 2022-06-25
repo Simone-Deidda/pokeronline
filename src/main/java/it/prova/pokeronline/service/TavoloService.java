@@ -27,4 +27,6 @@ public interface TavoloService {
 
 	Tavolo cercaUltimaPartita(Utente utenteLoggato);
 
+	List<Tavolo> cercaPartita(Utente utenteLoggato);
+
 }

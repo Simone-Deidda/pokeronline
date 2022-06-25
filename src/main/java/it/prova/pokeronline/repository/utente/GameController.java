@@ -1,6 +1,8 @@
 package it.prova.pokeronline.repository.utente;
 
 
+import java.util.List;
+
 import javax.websocket.server.PathParam;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,5 +63,17 @@ public class GameController {
 			throw new TavoloNotFoundException("Tavolo not found per Utente con id: " + utenteLoggato.getId());
 
 		return TavoloDTO.buildTavoloDTOFromModel(tavolo);
+	}
+	
+	@GetMapping("/searchGame")
+	public List<TavoloDTO> trovaPartita() {
+		Utente utenteLoggato = utenteService
+				.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+		
+		List<Tavolo> tavoliDisponibili = tavoloService.cercaPartita(utenteLoggato);
+		if (tavoliDisponibili == null || tavoliDisponibili.size() < 1)
+			throw new TavoloNotFoundException("List Tavoli not found con esperienza minima minore di: " + utenteLoggato.getEsperienzaAccumulata());
+
+		return TavoloDTO.buildTavoloDTOFromModelList(tavoliDisponibili);
 	}
 }
