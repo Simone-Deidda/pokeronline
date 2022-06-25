@@ -50,6 +50,12 @@ public class Tavolo {
 		this.cifraMinima = cifraMinima;
 	}
 
+	public Tavolo(String denominazione, int esperienzaMinima, int cifraMinima) {
+		this.denominazione = denominazione;
+		this.esperienzaMinima = esperienzaMinima;
+		this.cifraMinima = cifraMinima;
+	}
+
 	public Long getId() {
 		return id;
 	}

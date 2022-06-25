@@ -126,10 +126,9 @@ public class TavoloDTO {
 		return result;
 	}
 
-	@Override
-	public String toString() {
-		return "TavoloDTO [id=" + id + ", denominazione=" + denominazione + ", dataCreazione=" + dataCreazione
-				+ ", esperienzaMinima=" + esperienzaMinima + ", cifraMinima=" + cifraMinima + "]";
+	public static List<TavoloDTO> createTavoloDTOListFromModelList(List<Tavolo> listAllElementsEager, boolean b) {
+		return listAllElementsEager.stream().map(entity -> TavoloDTO.buildTavoloDTOFromModel(entity))
+				.collect(Collectors.toList());
 	}
 
 }
