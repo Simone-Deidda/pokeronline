@@ -45,13 +45,13 @@ public class UtenteDTO {
 	public UtenteDTO() {
 	}
 
-	public UtenteDTO(Long id, String username, String nome, String cognome, LocalDate dateCreated, StatoUtente stato,
+	public UtenteDTO(Long id, String username, String nome, String cognome, LocalDate dataRegistrazione, StatoUtente stato,
 			Integer esperienzaAccumulata, Integer creditoAccumulato) {
 		this.id = id;
 		this.username = username;
 		this.nome = nome;
 		this.cognome = cognome;
-		this.dataRegistrazione = dateCreated;
+		this.dataRegistrazione = dataRegistrazione;
 		this.stato = stato;
 		this.esperienzaAccumulata = esperienzaAccumulata;
 		this.creditoAccumulato = creditoAccumulato;
@@ -97,13 +97,6 @@ public class UtenteDTO {
 		this.cognome = cognome;
 	}
 
-	public LocalDate getDateCreated() {
-		return dataRegistrazione;
-	}
-
-	public void setDateCreated(LocalDate dateCreated) {
-		this.dataRegistrazione = dateCreated;
-	}
 
 	public StatoUtente getStato() {
 		return stato;
