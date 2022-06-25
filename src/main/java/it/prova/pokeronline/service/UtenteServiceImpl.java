@@ -34,13 +34,13 @@ public class UtenteServiceImpl implements UtenteService {
 
 	@Override
 	@Transactional
-	public void inserisciNuovo(Utente utenteInstance) {
+	public Utente inserisciNuovo(Utente utenteInstance) {
 		utenteInstance.setStato(StatoUtente.CREATO);
 		utenteInstance.setPassword(passwordEncoder.encode(utenteInstance.getPassword()));
 		utenteInstance.setDataRegistrazione(LocalDate.now());
 		utenteInstance.setEsperienzaAccumulata(0);
 		utenteInstance.setCreditoAccumulato(0);
-		repository.save(utenteInstance);
+		return repository.save(utenteInstance);
 	}
 
 	@Override
