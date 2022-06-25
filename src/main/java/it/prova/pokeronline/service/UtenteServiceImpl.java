@@ -27,6 +27,17 @@ public class UtenteServiceImpl implements UtenteService {
 	}
 
 	@Override
+	@Transactional
+	public Utente findByUsernameEAggiornaCredito(String name, Integer creditoInAggiunta) {
+		Utente utente = repository.findByUsername(name).orElse(null);
+		if (utente == null) {
+			return utente;
+		}
+		utente.setCreditoAccumulato(utente.getCreditoAccumulato() + creditoInAggiunta);
+		return utente;
+	}
+
+	@Override
 	@Transactional(readOnly = true)
 	public Utente caricaSingoloUtente(Long id) {
 		return repository.findById(id).orElse(null);

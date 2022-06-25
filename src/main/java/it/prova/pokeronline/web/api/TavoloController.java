@@ -47,7 +47,6 @@ public class TavoloController {
 				.contains(Ruolo.ROLE_SPECIAL_PLAYER)) {
 			return TavoloDTO.createTavoloDTOListFromModelList(tavoloService.cercaPerProprietario(utenteLoggato.getId()));
 		}
-
 		return TavoloDTO.createTavoloDTOListFromModelList(tavoloService.listAllElementsEager());
 	}
 

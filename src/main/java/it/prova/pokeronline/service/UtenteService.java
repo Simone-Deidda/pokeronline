@@ -21,4 +21,6 @@ public interface UtenteService {
 
 	public List<Utente> findByExample(Utente example);
 
+	public Utente findByUsernameEAggiornaCredito(String name, Integer credito);
+
 }

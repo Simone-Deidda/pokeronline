@@ -3,6 +3,7 @@ package it.prova.pokeronline.service;
 import java.util.List;
 
 import it.prova.pokeronline.model.Tavolo;
+import it.prova.pokeronline.model.Utente;
 
 public interface TavoloService {
 
@@ -21,5 +22,9 @@ public interface TavoloService {
 	void rimuovi(Tavolo tavolo);
 
 	List<Tavolo> findByExample(Tavolo buildTavoloModel);
+
+	Tavolo caricaSingoloElementoEagerEAggiongiGiocatore(long id, Utente utenteLoggato);
+
+	Tavolo cercaUltimaPartita(Utente utenteLoggato);
 
 }
