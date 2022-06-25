@@ -1,6 +1,5 @@
 package it.prova.pokeronline.repository.utente;
 
-
 import java.util.List;
 
 import javax.websocket.server.PathParam;
@@ -29,71 +28,84 @@ public class GameController {
 	private TavoloService tavoloService;
 	@Autowired
 	private UtenteService utenteService;
-	
+
 	@GetMapping("/buyCredit")
 	public UtenteDTO compraCredito(@PathParam(value = "credito") Integer credito) {
-		Utente utenteLoggato = utenteService
-				.findByUsernameEAggiornaCredito(SecurityContextHolder.getContext().getAuthentication().getName(), credito);
+		Utente utenteLoggato = utenteService.findByUsernameEAggiornaCredito(
+				SecurityContextHolder.getContext().getAuthentication().getName(), credito);
 		if (utenteLoggato == null) {
 			throw new UtenteNotFoundException();
 		}
-		
+
 		return UtenteDTO.buildUtenteDTOFromModel(utenteLoggato);
 	}
-	
+
 	@GetMapping("/{id}")
 	public TavoloDTO partecipaAlGioco(@PathVariable(value = "id", required = true) long id) {
 		Utente utenteLoggato = utenteService
 				.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
-		
+
 		Tavolo tavolo = tavoloService.caricaSingoloElementoEagerEAggiongiGiocatore(id, utenteLoggato);
 		if (tavolo == null)
 			throw new TavoloNotFoundException("Tavolo not found con id: " + id);
-		
 
 		return TavoloDTO.buildTavoloDTOFromModel(tavolo);
 	}
-	
+
 	@GetMapping("/lastGame")
 	public TavoloDTO lastGame() {
 		Utente utenteLoggato = utenteService
 				.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
-		
+
 		Tavolo tavolo = tavoloService.cercaUltimaPartita(utenteLoggato);
 		if (tavolo == null)
 			throw new TavoloNotFoundException("Tavolo not found per Utente con id: " + utenteLoggato.getId());
 
 		return TavoloDTO.buildTavoloDTOFromModel(tavolo);
 	}
-	
+
 	@GetMapping("/searchGame")
 	public List<TavoloDTO> trovaPartita() {
 		Utente utenteLoggato = utenteService
 				.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
-		
+
 		List<Tavolo> tavoliDisponibili = tavoloService.cercaPartita(utenteLoggato);
 		if (tavoliDisponibili == null || tavoliDisponibili.size() < 1)
-			throw new TavoloNotFoundException("List Tavoli not found con esperienza minima minore di: " + utenteLoggato.getEsperienzaAccumulata());
+			throw new TavoloNotFoundException("List Tavoli not found con esperienza minima minore di: "
+					+ utenteLoggato.getEsperienzaAccumulata());
 
 		return TavoloDTO.buildTavoloDTOFromModelList(tavoliDisponibili);
 	}
-	
+
 	@GetMapping("/play/{id}")
 	public TavoloDTO giocaPartita(@PathVariable(value = "id", required = true) long id) {
 		Utente utenteLoggato = utenteService
 				.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
-		
+
 		Tavolo tavolo = tavoloService.caricaSingoloElementoEager(id);
 		if (tavolo == null)
-			throw new TavoloNotFoundException("List Tavoli not found con esperienza minima minore di: " + utenteLoggato.getEsperienzaAccumulata());
-		if (tavolo.getGiocatori() == null || tavolo.getGiocatori().isEmpty() || !tavolo.getGiocatori().contains(utenteLoggato)) {
+			throw new TavoloNotFoundException("Tavolo not found con id: " + id);
+		if (tavolo.getGiocatori() == null || tavolo.getGiocatori().isEmpty()
+				|| !tavolo.getGiocatori().contains(utenteLoggato)) {
 			throw new UtenteNotFoundException("Non hai partecipato a questa partita");
 		}
 		if (utenteLoggato.getCreditoAccumulato() < tavolo.getCifraMinima()) {
 			throw new CreditoInsufficientePerGiocareException("Non hai abbastanza credito per giocare a questo Tavolo");
 		}
-		
+
 		utenteService.giocaPartita(utenteLoggato);
+
+		return TavoloDTO.buildTavoloDTOFromModel(tavolo);
+	}
+
+	@GetMapping("/leave/{id}")
+	public TavoloDTO abbandonaPartita(@PathVariable(value = "id", required = true) long id) {
+		Utente utenteLoggato = utenteService
+				.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+
+		Tavolo tavolo = tavoloService.caricaSingoloElementoEagerEAbbandonaPartita(id, utenteLoggato);
+		if (tavolo == null)
+			throw new TavoloNotFoundException("Tavolo not found con id: " + id);
 
 		return TavoloDTO.buildTavoloDTOFromModel(tavolo);
 	}

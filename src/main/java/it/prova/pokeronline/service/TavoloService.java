@@ -29,4 +29,5 @@ public interface TavoloService {
 
 	List<Tavolo> cercaPartita(Utente utenteLoggato);
 
+	Tavolo caricaSingoloElementoEagerEAbbandonaPartita(long id, Utente utenteLoggato);
 }
