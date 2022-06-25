@@ -19,4 +19,6 @@ public interface UtenteService {
 
 	public void rimuovi(Utente utente);
 
+	public List<Utente> findByExample(Utente example);
+
 }

@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import it.prova.pokeronline.dto.UtenteDTO;
 import it.prova.pokeronline.model.StatoUtente;
 import it.prova.pokeronline.model.Utente;
-import it.prova.pokeronline.repository.UtenteRepository;
+import it.prova.pokeronline.repository.untete.UtenteRepository;
 
 @Service
 public class UtenteServiceImpl implements UtenteService {
@@ -74,6 +74,12 @@ public class UtenteServiceImpl implements UtenteService {
 	@Transactional
 	public void rimuovi(Utente utente) {
 		utente.setStato(StatoUtente.DISABILITATO);
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public List<Utente> findByExample(Utente example) {
+		return repository.findByExample(example);
 	}
 
 }

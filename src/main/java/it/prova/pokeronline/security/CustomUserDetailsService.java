@@ -13,7 +13,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import it.prova.pokeronline.model.Utente;
-import it.prova.pokeronline.repository.UtenteRepository;
+import it.prova.pokeronline.repository.untete.UtenteRepository;
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
