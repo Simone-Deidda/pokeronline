@@ -46,4 +46,9 @@ public class TavoloServiceImpl implements TavoloService {
 	public Tavolo caricaSingoloElementoEager(long id) {
 		return tavoloRepository.findById(id).orElse(null);
 	}
+
+	@Override
+	public Tavolo aggiorna(Tavolo buildTavoloModel) {
+		return tavoloRepository.save(buildTavoloModel);
+	}
 }

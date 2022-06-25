@@ -11,6 +11,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -20,6 +21,7 @@ import it.prova.pokeronline.dto.SimpleUtenteDTO;
 import it.prova.pokeronline.dto.TavoloDTO;
 import it.prova.pokeronline.dto.UtenteDTO;
 import it.prova.pokeronline.exceptions.IdNotNullForInsertException;
+import it.prova.pokeronline.exceptions.PresentiGiocatoriException;
 import it.prova.pokeronline.exceptions.ProprietarioTavoloNonInseritoException;
 import it.prova.pokeronline.exceptions.TavoloNotFoundException;
 import it.prova.pokeronline.model.Ruolo;
@@ -74,5 +76,28 @@ public class TavoloController {
 													tavoloInput.getProprietario().getId())));
 		Tavolo tavoloInserito = tavoloService.inserisciNuovo(tavoloInput.buildTavoloModel());
 		return TavoloDTO.buildTavoloDTOFromModel(tavoloInserito);
+	}
+	
+	@PutMapping("/{id}")
+	public TavoloDTO update(@Valid @RequestBody TavoloDTO tavoloInput, @PathVariable(required = true) Long id) {
+		Tavolo tavolo = tavoloService.caricaSingoloElementoEager(id);
+
+		if (tavolo == null)
+			throw new TavoloNotFoundException("Tavolo not found con id: " + id);
+		if (tavoloInput.getGiocatori() != null || !tavoloInput.getGiocatori().isEmpty()) {
+			throw new PresentiGiocatoriException("Non è possibile modificare Tavolo quando ci sono giocatori collegati.");
+		}
+		if (tavoloInput.getProprietario() == null || tavoloInput.getProprietario().getId() == null
+				|| tavoloInput.getProprietario().getId() < 1) {
+			throw new ProprietarioTavoloNonInseritoException("Non è stato inserito il Proprietario del Tavolo.");
+		}
+		tavoloInput.setProprietario(SimpleUtenteDTO.buildSimpleUtenteDTOFromModel(
+										utenteService.caricaSingoloUtente(
+													tavoloInput.getProprietario().getId())));
+
+		tavoloInput.setDataCreazione(tavolo.getDataCreazione());
+		tavoloInput.setId(id);
+		Tavolo tavoloAggiornato = tavoloService.aggiorna(tavoloInput.buildTavoloModel());
+		return TavoloDTO.buildTavoloDTOFromModel(tavoloAggiornato);
 	}
 }

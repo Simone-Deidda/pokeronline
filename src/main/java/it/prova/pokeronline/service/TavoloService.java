@@ -16,4 +16,6 @@ public interface TavoloService {
 
 	Tavolo caricaSingoloElementoEager(long id);
 
+	Tavolo aggiorna(Tavolo buildTavoloModel);
+
 }
