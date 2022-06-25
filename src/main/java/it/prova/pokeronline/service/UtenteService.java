@@ -17,4 +17,6 @@ public interface UtenteService {
 
 	public Utente aggiorna(Utente buildUtenteModel);
 
+	public void rimuovi(Utente utente);
+
 }

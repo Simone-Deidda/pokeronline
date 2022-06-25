@@ -70,4 +70,10 @@ public class UtenteServiceImpl implements UtenteService {
 		return repository.save(utenteInstance);
 	}
 
+	@Override
+	@Transactional
+	public void rimuovi(Utente utente) {
+		utente.setStato(StatoUtente.DISABILITATO);
+	}
+
 }
