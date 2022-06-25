@@ -68,6 +68,10 @@ public class Utente {
 		this.cognome = cognome;
 	}
 
+	public Utente(Long id) {
+		this.id = id;
+	}
+
 	public Long getId() {
 		return id;
 	}

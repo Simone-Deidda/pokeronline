@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import it.prova.pokeronline.dto.UtenteDTO;
 import it.prova.pokeronline.model.StatoUtente;
 import it.prova.pokeronline.model.Utente;
-import it.prova.pokeronline.repository.untete.UtenteRepository;
+import it.prova.pokeronline.repository.utente.UtenteRepository;
 
 @Service
 public class UtenteServiceImpl implements UtenteService {

@@ -3,6 +3,7 @@ package it.prova.pokeronline.dto;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.validation.constraints.NotBlank;
@@ -158,6 +159,10 @@ public class UtenteDTO {
 			result.setRuoli(Arrays.asList(ruoliIds).stream().map(id -> new Ruolo(id)).collect(Collectors.toSet()));
 
 		return result;
+	}
+
+	public static List<UtenteDTO> createUtenteDTOListFromModelSet(Set<Utente> giocatori) {
+		return giocatori.stream().map(entity -> UtenteDTO.buildUtenteDTOFromModel(entity)).collect(Collectors.toList());
 	}
 
 }
