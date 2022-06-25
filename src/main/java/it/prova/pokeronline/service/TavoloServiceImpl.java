@@ -48,7 +48,14 @@ public class TavoloServiceImpl implements TavoloService {
 	}
 
 	@Override
+	@Transactional
 	public Tavolo aggiorna(Tavolo buildTavoloModel) {
 		return tavoloRepository.save(buildTavoloModel);
+	}
+
+	@Override
+	@Transactional
+	public void rimuovi(Tavolo tavolo) {
+		tavoloRepository.delete(tavolo);
 	}
 }

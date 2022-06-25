@@ -18,4 +18,6 @@ public interface TavoloService {
 
 	Tavolo aggiorna(Tavolo buildTavoloModel);
 
+	void rimuovi(Tavolo tavolo);
+
 }

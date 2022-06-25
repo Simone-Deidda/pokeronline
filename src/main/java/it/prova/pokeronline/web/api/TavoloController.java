@@ -8,6 +8,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -84,7 +85,7 @@ public class TavoloController {
 
 		if (tavolo == null)
 			throw new TavoloNotFoundException("Tavolo not found con id: " + id);
-		if (tavoloInput.getGiocatori() != null || !tavoloInput.getGiocatori().isEmpty()) {
+		if (tavoloInput.getGiocatori() == null || !tavoloInput.getGiocatori().isEmpty()) {
 			throw new PresentiGiocatoriException("Non è possibile modificare Tavolo quando ci sono giocatori collegati.");
 		}
 		if (tavoloInput.getProprietario() == null || tavoloInput.getProprietario().getId() == null
@@ -99,5 +100,19 @@ public class TavoloController {
 		tavoloInput.setId(id);
 		Tavolo tavoloAggiornato = tavoloService.aggiorna(tavoloInput.buildTavoloModel());
 		return TavoloDTO.buildTavoloDTOFromModel(tavoloAggiornato);
+	}
+	
+	@DeleteMapping("/{id}")
+	@ResponseStatus(HttpStatus.OK)
+	public void delete(@PathVariable(required = true) Long id) {
+		Tavolo tavolo = tavoloService.caricaSingoloElementoEager(id);
+
+		if (tavolo == null)
+			throw new TavoloNotFoundException("Regista not found con id: " + id);
+		if (tavolo.getGiocatori() == null || !tavolo.getGiocatori().isEmpty()) {
+			throw new PresentiGiocatoriException("Non è possibile eliminare Tavolo quando ci sono giocatori collegati.");
+		}
+
+		tavoloService.rimuovi(tavolo);
 	}
 }
