@@ -53,6 +53,13 @@ public class Utente {
 	public Utente() {
 	}
 
+	public Utente(Long id, String username, String nome, String cognome) {
+		this.id = id;
+		this.username = username;
+		this.nome = nome;
+		this.cognome = cognome;
+	}
+
 	public Utente(String username, String password, String nome, String cognome) {
 		this.username = username;
 		this.password = password;

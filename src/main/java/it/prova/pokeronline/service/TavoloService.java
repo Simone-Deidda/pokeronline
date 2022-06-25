@@ -14,4 +14,6 @@ public interface TavoloService {
 
 	List<Tavolo> cercaPerProprietario(Long id);
 
+	Tavolo caricaSingoloElementoEager(long id);
+
 }

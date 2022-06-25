@@ -25,8 +25,8 @@ public class TavoloDTO {
 	@Min(0)
 	private Integer cifraMinima;
 
-	private Long idProprietario;
-	private List<UtenteDTO> giocatori;
+	private SimpleUtenteDTO proprietario;
+	private List<SimpleUtenteDTO> giocatori;
 
 	public TavoloDTO() {
 	}
@@ -81,19 +81,19 @@ public class TavoloDTO {
 		this.cifraMinima = cifraMinima;
 	}
 
-	public Long getIdProprietario() {
-		return idProprietario;
+	public SimpleUtenteDTO getProprietario() {
+		return proprietario;
 	}
 
-	public void setIdProprietario(Long idProprietario) {
-		this.idProprietario = idProprietario;
+	public void setProprietario(SimpleUtenteDTO proprietario) {
+		this.proprietario = proprietario;
 	}
 
-	public List<UtenteDTO> getGiocatori() {
+	public List<SimpleUtenteDTO> getGiocatori() {
 		return giocatori;
 	}
 
-	public void setGiocatori(List<UtenteDTO> giocatori) {
+	public void setGiocatori(List<SimpleUtenteDTO> giocatori) {
 		this.giocatori = giocatori;
 	}
 
@@ -101,12 +101,12 @@ public class TavoloDTO {
 		Tavolo result = new Tavolo(this.id, this.denominazione, this.dataCreazione, this.esperienzaMinima,
 				this.cifraMinima);
 
-		if (this.idProprietario != null && this.idProprietario > 0) {
-			result.setProprietarioTavolo(new Utente(this.idProprietario));
+		if (this.proprietario != null && this.proprietario.getId() != null && this.proprietario.getId() > 0) {
+			result.setProprietarioTavolo(proprietario.buildUtenteModel());
 		}
 		if (this.giocatori != null && !this.giocatori.isEmpty()) {
 			result.setGiocatori(
-					this.giocatori.stream().map(entity -> entity.buildUtenteModel(false)).collect(Collectors.toSet()));
+					this.giocatori.stream().map(entity -> entity.buildUtenteModel()).collect(Collectors.toSet()));
 		}
 		return result;
 	}
@@ -118,10 +118,10 @@ public class TavoloDTO {
 
 		if (tavoloInserito.getProprietarioTavolo() != null && tavoloInserito.getProprietarioTavolo().getId() != null
 				&& tavoloInserito.getProprietarioTavolo().getId() > 0) {
-			result.setIdProprietario(tavoloInserito.getProprietarioTavolo().getId());
+			result.setProprietario(SimpleUtenteDTO.buildSimpleUtenteDTOFromModel(tavoloInserito.getProprietarioTavolo()));
 		}
 		if (tavoloInserito.getGiocatori() != null && !tavoloInserito.getGiocatori().isEmpty()) {
-			result.setGiocatori(UtenteDTO.createUtenteDTOListFromModelSet(tavoloInserito.getGiocatori()));
+			result.setGiocatori(SimpleUtenteDTO.createSimpleUtenteDTOListFromModelSet(tavoloInserito.getGiocatori()));
 		}
 		return result;
 	}

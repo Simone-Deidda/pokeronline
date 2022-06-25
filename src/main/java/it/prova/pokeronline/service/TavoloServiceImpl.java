@@ -40,4 +40,10 @@ public class TavoloServiceImpl implements TavoloService {
 	public List<Tavolo> cercaPerProprietario(Long id) {
 		return tavoloRepository.findAllByProprietarioTavolo_Id(id);
 	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public Tavolo caricaSingoloElementoEager(long id) {
+		return tavoloRepository.findById(id).orElse(null);
+	}
 }
