@@ -21,7 +21,7 @@ public interface TavoloService {
 
 	void rimuovi(Tavolo tavolo);
 
-	List<Tavolo> findByExample(Tavolo buildTavoloModel);
+	List<Tavolo> findByExample(Tavolo buildTavoloModel, Utente special);
 
 	Tavolo caricaSingoloElementoEagerEAggiongiGiocatore(long id, Utente utenteLoggato);
 

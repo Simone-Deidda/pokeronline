@@ -19,12 +19,12 @@ public class CustomTavoloRepositoryImpl implements CustomTavoloRepository {
 	private EntityManager entityManager;
 
 	@Override
-	
-	public List<Tavolo> findByExample(Tavolo example) {
+	public List<Tavolo> findByExample(Tavolo example, Utente special) {
 		Map<String, Object> paramaterMap = new HashMap<String, Object>();
 		List<String> whereClauses = new ArrayList<String>();
 
-		StringBuilder queryBuilder = new StringBuilder("select t from Tavolo t join fetch t.proprietarioTavolo p where t.id = t.id ");
+		StringBuilder queryBuilder = new StringBuilder(
+				"select t from Tavolo t join fetch t.proprietarioTavolo p where t.id = t.id ");
 
 		if (StringUtils.isNotEmpty(example.getDenominazione())) {
 			whereClauses.add(" t.denominazione  like :denominazione ");
@@ -42,12 +42,19 @@ public class CustomTavoloRepositoryImpl implements CustomTavoloRepository {
 			whereClauses.add("t.dataCreazione >= :dataCreazione ");
 			paramaterMap.put("dataCreazione", example.getDataCreazione());
 		}
-		if (example.getProprietarioTavolo() != null && example.getProprietarioTavolo().getId() != null && example.getProprietarioTavolo().getId() > 0) {
+		if (special != null && special.getId() != null && special.getId() > 0) {
 			whereClauses.add("p.id = :proprietario_id ");
 			paramaterMap.put("proprietario_id", example.getProprietarioTavolo().getId());
+		} else {
+			if (example.getProprietarioTavolo() != null && example.getProprietarioTavolo().getId() != null
+					&& example.getProprietarioTavolo().getId() > 0) {
+				whereClauses.add("p.id = :proprietario_id ");
+				paramaterMap.put("proprietario_id", example.getProprietarioTavolo().getId());
+			}
+
 		}
-		
-		queryBuilder.append(!whereClauses.isEmpty()?" and ":"");
+
+		queryBuilder.append(!whereClauses.isEmpty() ? " and " : "");
 		queryBuilder.append(StringUtils.join(whereClauses, " and "));
 		TypedQuery<Tavolo> typedQuery = entityManager.createQuery(queryBuilder.toString(), Tavolo.class);
 

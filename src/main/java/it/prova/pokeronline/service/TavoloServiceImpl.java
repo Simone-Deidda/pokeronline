@@ -76,8 +76,8 @@ public class TavoloServiceImpl implements TavoloService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<Tavolo> findByExample(Tavolo buildTavoloModel) {
-		return tavoloRepository.findByExample(buildTavoloModel);
+	public List<Tavolo> findByExample(Tavolo buildTavoloModel, Utente special) {
+		return tavoloRepository.findByExample(buildTavoloModel, special);
 	}
 
 	@Override

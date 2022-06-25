@@ -115,6 +115,13 @@ public class TavoloController {
 	
 	@PostMapping("/search")
 	public List<TavoloDTO> search(@RequestBody TavoloDTO example) {
-		return TavoloDTO.createTavoloDTOListFromModelList(tavoloService.findByExample(example.buildTavoloModel()));
+		Utente utenteLoggato = utenteService
+				.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+
+		if (utenteLoggato.getRuoli().stream().map(ruolo -> ruolo.getCodice()).collect(Collectors.toList())
+				.contains(Ruolo.ROLE_SPECIAL_PLAYER)) {
+			return TavoloDTO.createTavoloDTOListFromModelList(tavoloService.findByExample(example.buildTavoloModel(), utenteLoggato));
+		}
+		return TavoloDTO.createTavoloDTOListFromModelList(tavoloService.findByExample(example.buildTavoloModel(), null));
 	}
 }
