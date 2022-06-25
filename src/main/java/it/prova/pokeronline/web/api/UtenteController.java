@@ -11,6 +11,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -64,5 +65,18 @@ public class UtenteController {
 			throw new UtenteNotFoundException("Utente not found con id: " + id);
 
 		return UtenteDTO.buildUtenteDTOFromModel(utente);
+	}
+	
+	@PutMapping("/{id}")
+	public UtenteDTO update(@Valid @RequestBody UtenteDTO utenteInput, @PathVariable(required = true) Long id) {
+		Utente utente = utenteService.caricaSingoloUtente(id);
+
+		if (utente == null)
+			throw new UtenteNotFoundException("Utente not found con id: " + id);
+
+		utenteInput.setId(id);
+		utenteInput.setPassword(utente.getPassword());
+		Utente registaAggiornato = utenteService.aggiorna(utenteInput.buildUtenteModel(true));
+		return UtenteDTO.buildUtenteDTOFromModel(registaAggiornato);
 	}
 }

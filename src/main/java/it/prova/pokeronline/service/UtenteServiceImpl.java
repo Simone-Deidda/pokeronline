@@ -25,7 +25,7 @@ public class UtenteServiceImpl implements UtenteService {
 	public Utente findByUsername(String username) {
 		return repository.findByUsername(username).orElse(null);
 	}
-	
+
 	@Override
 	@Transactional(readOnly = true)
 	public Utente caricaSingoloUtente(Long id) {
@@ -62,6 +62,12 @@ public class UtenteServiceImpl implements UtenteService {
 	@Transactional(readOnly = true)
 	public List<Utente> caricaListaUtenti() {
 		return (List<Utente>) repository.findAll();
+	}
+
+	@Override
+	@Transactional
+	public Utente aggiorna(Utente utenteInstance) {
+		return repository.save(utenteInstance);
 	}
 
 }

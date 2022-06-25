@@ -14,4 +14,7 @@ public interface UtenteService {
 	Utente caricaSingoloUtente(Long id);
 
 	public List<Utente> caricaListaUtenti();
+
+	public Utente aggiorna(Utente buildUtenteModel);
+
 }
