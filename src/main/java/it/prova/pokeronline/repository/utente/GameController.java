@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import it.prova.pokeronline.dto.TavoloDTO;
 import it.prova.pokeronline.dto.UtenteDTO;
+import it.prova.pokeronline.exceptions.CreditoInsufficientePerGiocareException;
 import it.prova.pokeronline.exceptions.TavoloNotFoundException;
 import it.prova.pokeronline.exceptions.UtenteNotFoundException;
 import it.prova.pokeronline.model.Tavolo;
@@ -75,5 +76,25 @@ public class GameController {
 			throw new TavoloNotFoundException("List Tavoli not found con esperienza minima minore di: " + utenteLoggato.getEsperienzaAccumulata());
 
 		return TavoloDTO.buildTavoloDTOFromModelList(tavoliDisponibili);
+	}
+	
+	@GetMapping("/play/{id}")
+	public TavoloDTO giocaPartita(@PathVariable(value = "id", required = true) long id) {
+		Utente utenteLoggato = utenteService
+				.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+		
+		Tavolo tavolo = tavoloService.caricaSingoloElementoEager(id);
+		if (tavolo == null)
+			throw new TavoloNotFoundException("List Tavoli not found con esperienza minima minore di: " + utenteLoggato.getEsperienzaAccumulata());
+		if (tavolo.getGiocatori() == null || tavolo.getGiocatori().isEmpty() || !tavolo.getGiocatori().contains(utenteLoggato)) {
+			throw new UtenteNotFoundException("Non hai partecipato a questa partita");
+		}
+		if (utenteLoggato.getCreditoAccumulato() < tavolo.getCifraMinima()) {
+			throw new CreditoInsufficientePerGiocareException("Non hai abbastanza credito per giocare a questo Tavolo");
+		}
+		
+		utenteService.giocaPartita(utenteLoggato);
+
+		return TavoloDTO.buildTavoloDTOFromModel(tavolo);
 	}
 }

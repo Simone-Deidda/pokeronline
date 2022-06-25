@@ -93,4 +93,16 @@ public class UtenteServiceImpl implements UtenteService {
 		return repository.findByExample(example);
 	}
 
+	@Override
+	@Transactional
+	public void giocaPartita(Utente utenteLoggato) {
+		double segno = Math.random();
+		int totale = (int) ((segno >= 0.5) ? segno * 100 : -(segno * 100));
+
+		utenteLoggato.setCreditoAccumulato(
+				totale + utenteLoggato.getCreditoAccumulato() < 0 ? 0 : totale + utenteLoggato.getCreditoAccumulato());
+		utenteLoggato.setEsperienzaAccumulata(utenteLoggato.getEsperienzaAccumulata() + 1);
+		repository.save(utenteLoggato);
+	}
+
 }

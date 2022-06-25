@@ -23,4 +23,6 @@ public interface UtenteService {
 
 	public Utente findByUsernameEAggiornaCredito(String name, Integer credito);
 
+	public void giocaPartita(Utente utenteLoggato);
+
 }

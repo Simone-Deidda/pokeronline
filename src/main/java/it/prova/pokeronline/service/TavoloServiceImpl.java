@@ -92,5 +92,6 @@ public class TavoloServiceImpl implements TavoloService {
 		return tavoloRepository.findByEsperienzaMinimaLessThanEqual(utenteLoggato.getEsperienzaAccumulata());
 	}
 
+
 	
 }
