@@ -20,4 +20,6 @@ public interface TavoloService {
 
 	void rimuovi(Tavolo tavolo);
 
+	List<Tavolo> findByExample(Tavolo buildTavoloModel);
+
 }

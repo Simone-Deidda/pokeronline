@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import it.prova.pokeronline.dto.SimpleUtenteDTO;
 import it.prova.pokeronline.dto.TavoloDTO;
-import it.prova.pokeronline.dto.UtenteDTO;
 import it.prova.pokeronline.exceptions.IdNotNullForInsertException;
 import it.prova.pokeronline.exceptions.PresentiGiocatoriException;
 import it.prova.pokeronline.exceptions.ProprietarioTavoloNonInseritoException;
@@ -46,11 +45,10 @@ public class TavoloController {
 
 		if (utenteLoggato.getRuoli().stream().map(ruolo -> ruolo.getCodice()).collect(Collectors.toList())
 				.contains(Ruolo.ROLE_SPECIAL_PLAYER)) {
-			return TavoloDTO.createTavoloDTOListFromModelList(tavoloService.cercaPerProprietario(utenteLoggato.getId()),
-					true);
+			return TavoloDTO.createTavoloDTOListFromModelList(tavoloService.cercaPerProprietario(utenteLoggato.getId()));
 		}
 
-		return TavoloDTO.createTavoloDTOListFromModelList(tavoloService.listAllElementsEager(), true);
+		return TavoloDTO.createTavoloDTOListFromModelList(tavoloService.listAllElementsEager());
 	}
 
 	@GetMapping("/{id}")
@@ -85,7 +83,7 @@ public class TavoloController {
 
 		if (tavolo == null)
 			throw new TavoloNotFoundException("Tavolo not found con id: " + id);
-		if (tavoloInput.getGiocatori() == null || !tavoloInput.getGiocatori().isEmpty()) {
+		if (tavolo.getGiocatori() == null || !tavolo.getGiocatori().isEmpty()) {
 			throw new PresentiGiocatoriException("Non è possibile modificare Tavolo quando ci sono giocatori collegati.");
 		}
 		if (tavoloInput.getProprietario() == null || tavoloInput.getProprietario().getId() == null
@@ -114,5 +112,10 @@ public class TavoloController {
 		}
 
 		tavoloService.rimuovi(tavolo);
+	}
+	
+	@PostMapping("/search")
+	public List<TavoloDTO> search(@RequestBody TavoloDTO example) {
+		return TavoloDTO.createTavoloDTOListFromModelList(tavoloService.findByExample(example.buildTavoloModel()));
 	}
 }

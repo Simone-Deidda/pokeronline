@@ -126,7 +126,7 @@ public class TavoloDTO {
 		return result;
 	}
 
-	public static List<TavoloDTO> createTavoloDTOListFromModelList(List<Tavolo> listAllElementsEager, boolean b) {
+	public static List<TavoloDTO> createTavoloDTOListFromModelList(List<Tavolo> listAllElementsEager) {
 		return listAllElementsEager.stream().map(entity -> TavoloDTO.buildTavoloDTOFromModel(entity))
 				.collect(Collectors.toList());
 	}

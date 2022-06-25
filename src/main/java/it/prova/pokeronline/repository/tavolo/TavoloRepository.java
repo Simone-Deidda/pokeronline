@@ -1,4 +1,4 @@
-package it.prova.pokeronline.repository;
+package it.prova.pokeronline.repository.tavolo;
 
 import java.util.List;
 import java.util.Optional;
@@ -8,14 +8,14 @@ import org.springframework.data.repository.CrudRepository;
 
 import it.prova.pokeronline.model.Tavolo;
 
-public interface TavoloRepository extends CrudRepository<Tavolo, Long> {
+public interface TavoloRepository extends CrudRepository<Tavolo, Long>, CustomTavoloRepository {
 
-	@EntityGraph(attributePaths = {"giocatori", "proprietarioTavolo"})
+	@EntityGraph(attributePaths = { "giocatori", "proprietarioTavolo" })
 	List<Tavolo> findAll();
 
 	Optional<Tavolo> findByDenominazione(String string);
 
-	@EntityGraph(attributePaths = {"giocatori", "proprietarioTavolo"})
+	@EntityGraph(attributePaths = { "giocatori", "proprietarioTavolo" })
 	List<Tavolo> findAllByProprietarioTavolo_Id(Long id);
 
 }

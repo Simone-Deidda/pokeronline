@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import it.prova.pokeronline.model.Tavolo;
-import it.prova.pokeronline.repository.TavoloRepository;
+import it.prova.pokeronline.repository.tavolo.TavoloRepository;
 
 @Service
 public class TavoloServiceImpl implements TavoloService {
@@ -57,5 +57,11 @@ public class TavoloServiceImpl implements TavoloService {
 	@Transactional
 	public void rimuovi(Tavolo tavolo) {
 		tavoloRepository.delete(tavolo);
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public List<Tavolo> findByExample(Tavolo buildTavoloModel) {
+		return tavoloRepository.findByExample(buildTavoloModel);
 	}
 }
